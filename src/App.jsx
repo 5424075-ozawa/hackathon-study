@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { askAI } from "./api";
 
@@ -68,31 +67,82 @@ function App() {
     };
 
     return (
-        <div style={{ padding: "20px", fontFamily: "sans-serif", maxWidth: "800px", margin: "0 auto" }}>
-            <h1 style={{ fontSize: "36px", color: "#333", borderBottom: "3px solid #007bff", paddingBottom: "12px", marginBottom: "40px" }}>
+        <div
+            style={{
+                padding: "20px",
+                fontFamily: "sans-serif",
+                maxWidth: "800px",
+                margin: "0 auto",
+            }}
+        >
+            <h1
+                style={{
+                    fontSize: "36px",
+                    color: "#333",
+                    borderBottom: "3px solid #007bff",
+                    paddingBottom: "12px",
+                    marginBottom: "40px",
+                }}
+            >
                 授業おすすめソン
             </h1>
 
-            <h2 style={{ marginBottom: "25px", color: "#555" }}>
+            <h2
+                style={{
+                    marginBottom: "25px",
+                    color: "#555",
+                }}
+            >
                 評価基準の希望順位選択
             </h2>
 
             {ranks.map((rank) => (
-                <div key={rank.id} style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}>
-                    <span style={{ fontWeight: "bold", width: "120px", color: "#444", fontSize: "20px" }}>
+                <div
+                    key={rank.id}
+                    style={{
+                        marginBottom: "24px",
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <span
+                        style={{
+                            fontWeight: "bold",
+                            width: "120px",
+                            color: "#444",
+                            fontSize: "20px",
+                        }}
+                    >
                         {rank.label}:
                     </span>
 
-                    <div style={{ display: "flex", gap: "35px" }}>
+                    <div
+                        style={{
+                            display: "flex",
+                            gap: "35px",
+                        }}
+                    >
                         {options.map((option) => (
-                            <label key={option.id} style={{ cursor: "pointer", display: "flex", alignItems: "center", fontSize: "20px" }}>
+                            <label
+                                key={option.id}
+                                style={{
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    fontSize: "20px",
+                                }}
+                            >
                                 <input
                                     type="radio"
                                     name={rank.id}
                                     value={option.id}
                                     checked={preferences[rank.id] === option.id}
                                     onChange={() => handleChange(rank.id, option.id)}
-                                    style={{ marginRight: "8px", width: "18px", height: "18px" }}
+                                    style={{
+                                        marginRight: "8px",
+                                        width: "18px",
+                                        height: "18px",
+                                    }}
                                 />
                                 {option.text}
                             </label>
