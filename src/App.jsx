@@ -7,7 +7,17 @@ function App() {
     return (
         <div>
             <CheckBox
-                text="チェックボックス"
+                text="出席"
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+            />
+            <CheckBox
+                text="テスト"
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+            />
+            <CheckBox
+                text="レポート"
                 checked={checked}
                 onChange={(e) => setChecked(e.target.checked)}
             />
