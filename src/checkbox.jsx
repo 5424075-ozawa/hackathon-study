@@ -1,14 +1,10 @@
-import { useState } from "react";
-
-function CheckBox({ text }) {
-    const [checked, setChecked] = useState(false);
-
+function CheckBox({ text, checked, onChange }) {
     return (
         <label>
             <input
                 type="checkbox"
                 checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                onChange={onChange}
             />
             {text}
         </label>
