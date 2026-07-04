@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "server": "node server.js",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -15,13 +16,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/onnasann/hackathon-study/issues"
   },
   "homepage": "https://github.com/onnasann/hackathon-study#readme",
   "dependencies": {
-    "node": "^26.4.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "papaparse": "^5.5.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
