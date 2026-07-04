@@ -2,24 +2,28 @@ import { useState } from "react";
 import CheckBox from "./CheckBox";
 
 function App() {
-    const [checked, setChecked] = useState(false);
+    const [attendance, setAttendance] = useState(false);
+    const [test, setTest] = useState(false);
+    const [report, setReport] = useState(false);
 
     return (
         <div>
             <CheckBox
                 text="出席"
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                checked={attendance}
+                onChange={(e) => setAttendance(e.target.checked)}
             />
+
             <CheckBox
                 text="テスト"
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                checked={test}
+                onChange={(e) => setTest(e.target.checked)}
             />
+
             <CheckBox
                 text="レポート"
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                checked={report}
+                onChange={(e) => setReport(e.target.checked)}
             />
         </div>
     );
