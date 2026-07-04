@@ -7,7 +7,13 @@ function App() {
     const [report, setReport] = useState(false);
 
     return (
+
+
         <div>
+            <div>
+                <h1>授業おすすめそん</h1>
+            </div>
+
             <CheckBox
                 text="出席"
                 checked={attendance}
