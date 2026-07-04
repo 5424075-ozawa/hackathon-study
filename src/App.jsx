@@ -13,14 +13,12 @@ function App() {
         { id: "second", label: "第二希望" },
     ];
 
-<<<<<<< HEAD
     // 状態管理
     const [preferences, setPreferences] = useState({ first: "", second: "" });
     const [results, setResults] = useState([]); // 検索結果を格納する
     const [hasSearched, setHasSearched] = useState(false);
 
     // ラジオボタン変更
-=======
     const [preferences, setPreferences] = useState({
         first: "",
         second: "",
@@ -29,7 +27,6 @@ function App() {
     const [answer, setAnswer] = useState("");
     const [loading, setLoading] = useState(false);
 
->>>>>>> a5df0eda4c80ced446c6f78b8d2d698980e3cd51
     const handleChange = (rankId, optionId) => {
         setPreferences({ ...preferences, [rankId]: optionId });
     };
@@ -83,7 +80,6 @@ function App() {
         return data;
     };
 
-<<<<<<< HEAD
     // 決定ボタンが押された時の処理
     const handleSubmit = async () => {
         if (!preferences.first) {
@@ -127,7 +123,6 @@ function App() {
         } catch (error) {
             console.error("CSVの読み込み・パースエラー:", error);
             alert("CSVデータの読み込みに失敗しました。publicフォルダにファイルがあるか確認してください。");
-=======
     const getOptionText = (optionId) => {
         const option = options.find((item) => item.id === optionId);
         return option ? option.text : "未選択";
@@ -163,16 +158,12 @@ function App() {
             setAnswer("AIの取得に失敗しました。");
         } finally {
             setLoading(false);
->>>>>>> a5df0eda4c80ced446c6f78b8d2d698980e3cd51
         }
     };
 
     return (
-<<<<<<< HEAD
         <div style={{ padding: "20px", fontFamily: "sans-serif", maxWidth: "800px", margin: "0 auto" }}>
-=======
         <div style={{ padding: "20px", fontFamily: "sans-serif", maxWidth: "600px", margin: "0 auto" }}>
->>>>>>> a5df0eda4c80ced446c6f78b8d2d698980e3cd51
             <h1 style={{ fontSize: "28px", color: "#333", borderBottom: "2px solid #007bff", paddingBottom: "10px", marginBottom: "30px" }}>
                 授業おすすめソン
             </h1>
@@ -183,11 +174,8 @@ function App() {
 
             {ranks.map((rank) => (
                 <div key={rank.id} style={{ marginBottom: "20px", display: "flex", alignItems: "center" }}>
-<<<<<<< HEAD
                     <span style={{ fontWeight: "bold", width: "90px", flexShrink: 0, color: "#444" }}>
-=======
                     <span style={{ fontWeight: "bold", width: "90px", color: "#444" }}>
->>>>>>> a5df0eda4c80ced446c6f78b8d2d698980e3cd51
                         {rank.label}:
                     </span>
 
@@ -222,7 +210,6 @@ function App() {
                     color: "white",
                     border: "none",
                     borderRadius: "4px",
-<<<<<<< HEAD
                     cursor: "pointer",
                     boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                     transition: "background-color 0.2s"
@@ -261,7 +248,6 @@ function App() {
                             ))}
                         </div>
                     )}
-=======
                     cursor: loading ? "not-allowed" : "pointer",
                     boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                 }}
@@ -289,7 +275,6 @@ function App() {
                 >
                     <h3 style={{ marginTop: 0 }}>AIのおすすめ</h3>
                     <p>{answer}</p>
->>>>>>> a5df0eda4c80ced446c6f78b8d2d698980e3cd51
                 </div>
             )}
         </div>
