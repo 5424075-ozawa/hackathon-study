@@ -22,6 +22,7 @@
   "homepage": "https://github.com/onnasann/hackathon-study#readme",
   "dependencies": {
     "node": "^26.4.0",
+    "papaparse": "^5.5.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
