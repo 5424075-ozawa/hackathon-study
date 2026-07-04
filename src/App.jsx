@@ -2,29 +2,31 @@ import { useState } from "react";
 import CheckBox from "./CheckBox";
 
 function App() {
-    const [attendance, setAttendance] = useState(false);
-    const [test, setTest] = useState(false);
-    const [report, setReport] = useState(false);
+    const items = [
+        { id: "attendance", text: "出席" },
+        { id: "test", text: "テスト" },
+        { id: "report", text: "レポート" },
+    ];
+
+    const [checked, setChecked] = useState({});
+
+    const handleChange = (id) => (e) => {
+        setChecked({
+            ...checked,
+            [id]: e.target.checked,
+        });
+    };
 
     return (
         <div>
-            <CheckBox
-                text="出席"
-                checked={attendance}
-                onChange={(e) => setAttendance(e.target.checked)}
-            />
-
-            <CheckBox
-                text="テスト"
-                checked={test}
-                onChange={(e) => setTest(e.target.checked)}
-            />
-
-            <CheckBox
-                text="レポート"
-                checked={report}
-                onChange={(e) => setReport(e.target.checked)}
-            />
+            {items.map((item) => (
+                <CheckBox
+                    key={item.id}
+                    text={item.text}
+                    checked={checked[item.id] || false}
+                    onChange={handleChange(item.id)}
+                />
+            ))}
         </div>
     );
 }
