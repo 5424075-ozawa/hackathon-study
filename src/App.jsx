@@ -1,7 +1,18 @@
-export default function App() {
+import { useState } from "react";
+import CheckBox from "./CheckBox";
+
+function App() {
+    const [checked, setChecked] = useState(false);
+
     return (
         <div>
-            <h1>ウンチブリブリ</h1>
+            <CheckBox
+                text="チェックボックス"
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+            />
         </div>
     );
 }
+
+export default App;
