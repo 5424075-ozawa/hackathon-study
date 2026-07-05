@@ -10,11 +10,19 @@ export async function askAI(message) {
             }),
         });
 
-        const data = await response.json();
+        const text = await response.text();
+
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch {
+            console.error("JSONではないレスポンス:", text);
+            return "AIサーバー側でエラーが発生しました。Netlify Functionsのログを確認してください。";
+        }
 
         if (!response.ok) {
             console.error("AI API Error:", data);
-            return "AIの取得に失敗しました。";
+            return data.error || data.detail || "AIの取得に失敗しました。";
         }
 
         return data.reply;
