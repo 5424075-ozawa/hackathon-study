@@ -104,9 +104,13 @@ function App() {
 
     return (
         <div className="container">
-            <h1 className="title">授業おすすめソン</h1>
+            <h1 className="title">
+                授業おすすめソン
+            </h1>
 
-            <h2 className="subTitle">評価基準の希望順位選択</h2>
+            <h2 className="subTitle">
+                評価基準の希望順位選択
+            </h2>
 
             {ranks.map((rank) => (
                 <div className="rankRow" key={rank.id}>
