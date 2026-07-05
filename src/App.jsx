@@ -1,6 +1,30 @@
 import { useState } from "react";
 import { askAI } from "./api";
 
+function renderAnswer(text) {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    return text.split("\n").map((line, i) => (
+        <div key={i}>
+            {line.split(urlRegex).map((part, j) => {
+                if (urlRegex.test(part)) {
+                    return (
+                        <a
+                            key={j}
+                            href={part}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {part}
+                        </a>
+                    );
+                }
+                return part;
+            })}
+        </div>
+    ));
+}
+
 function App() {
     const options = [
         { id: "attendance", text: "出席" },
@@ -190,7 +214,9 @@ function App() {
                     }}
                 >
                     <h2 style={{ marginTop: 0 }}>AIのおすすめ</h2>
-                    <p>{answer}</p>
+                    <div>
+                        {renderAnswer(answer)}
+                    </div>
                 </div>
             )}
         </div>
