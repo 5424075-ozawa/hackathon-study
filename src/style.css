@@ -15,6 +15,8 @@ body {
 
 .title {
     font-size: 36px;
+
+
     color: #333;
     border-bottom: 3px solid #007bff;
     padding-bottom: 12px;
@@ -102,4 +104,37 @@ body {
 
 .answerBox a:hover {
     text-decoration: underline;
+}
+
+.guideBox {
+    background-color: #eef6ff;
+    border-left: 5px solid #007bff;
+    padding: 18px 20px;
+    margin-bottom: 35px;
+    border-radius: 8px;
+}
+
+.guideBox h3 {
+    margin: 0 0 12px;
+    color: #007bff;
+    font-size: 22px;
+}
+
+.guideBox ol {
+    margin: 0;
+    padding-left: 22px;
+    line-height: 1.8;
+}
+
+.guideNote {
+    margin-top: 12px;
+    font-size: 15px;
+    color: #666;
+}
+
+.sevenContainer {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    margin-bottom: 30px;
 }
