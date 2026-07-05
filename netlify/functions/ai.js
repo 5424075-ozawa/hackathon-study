@@ -88,10 +88,10 @@ ${row["URL"] || ""}
         .map((item) => item.row);
 
     if (matchedRows.length > 0) {
-        return matchedRows.slice(0, 20);
+        return matchedRows.slice(0, 10);
     }
 
-    return rows.slice(0, 20);
+    return rows.slice(0, 10);
 }
 
 function makeSyllabusText(rows) {
@@ -177,6 +177,7 @@ Markdownは絶対に使わない。
 理由は1文だけ。
 日本語で短く答える。
 URLはシラバス情報にあるものをそのまま使う。
+シラバス情報に合う授業が少ない場合は、近い条件の授業を選ぶ。
 
 出力形式:
 1. 科目名：
@@ -221,7 +222,7 @@ ${message}
                     },
                 ],
                 temperature: 0.3,
-                max_tokens: 700,
+                max_tokens: 400,
             }),
         });
 
@@ -234,7 +235,7 @@ ${message}
             return new Response(
                 JSON.stringify({
                     error: "OpenRouter returned non JSON response",
-                    detail: text.slice(0, 300),
+                    detail: text.slice(0, 500),
                 }),
                 {
                     status: 500,
@@ -246,19 +247,40 @@ ${message}
         }
 
         if (!response.ok) {
-            return new Response(JSON.stringify(data), {
-                status: response.status,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+            return new Response(
+                JSON.stringify({
+                    error: "OpenRouter API error",
+                    detail: data,
+                }),
+                {
+                    status: response.status,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+        }
+
+        const reply = data.choices?.[0]?.message?.content;
+
+        if (!reply) {
+            return new Response(
+                JSON.stringify({
+                    error: "OpenRouterから返答本文を取得できませんでした。",
+                    detail: data,
+                }),
+                {
+                    status: 502,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
         }
 
         return new Response(
             JSON.stringify({
-                reply:
-                    data.choices?.[0]?.message?.content ||
-                    "返答を取得できませんでした。",
+                reply,
             }),
             {
                 status: 200,
