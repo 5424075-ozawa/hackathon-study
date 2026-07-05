@@ -113,6 +113,38 @@ URL: ${row["URL"] || ""}
         .join("\n");
 }
 
+function extractReply(data) {
+    const choice = data?.choices?.[0];
+
+    const content = choice?.message?.content;
+    if (typeof content === "string" && content.trim()) {
+        return content.trim();
+    }
+
+    if (Array.isArray(content)) {
+        const joined = content
+            .map((item) => {
+                if (typeof item === "string") return item;
+                if (typeof item?.text === "string") return item.text;
+                if (typeof item?.content === "string") return item.content;
+                return "";
+            })
+            .join("\n")
+            .trim();
+
+        if (joined) {
+            return joined;
+        }
+    }
+
+    const text = choice?.text;
+    if (typeof text === "string" && text.trim()) {
+        return text.trim();
+    }
+
+    return "";
+}
+
 export default async function handler(request) {
     if (request.method !== "POST") {
         return new Response(
@@ -165,25 +197,46 @@ export default async function handler(request) {
 
         const prompt = `
 あなたは大学のシラバス検索を手伝うAIです。
-以下のシラバスCSVの内容だけを参考にして、学生におすすめ授業を提案してください。
+以下のシラバス情報だけを参考にして、学生におすすめ授業を提案してください。
 
-【重要ルール】
-・存在しない授業名を作らない
-・必ずCSVにある科目から選ぶ
-・おすすめは3つまで
-・科目名、先生、評価方法、理由、urlを答え、それぞれ改行する
-・評価基準の希望に合うものを優先する
-・Markdown記号（** や ---）は使わない
-・番号付きで、普通の文章として出力する
-・短くわかりやすく答える
-・日本語で答える
+重要ルール:
+考えている過程や比較検討の文章は絶対に書かない。
+英語は絶対に使わない。
+Markdownは絶対に使わない。
+###、##、**、---、- は使わない。
+存在しない授業名を作らない。
+必ずシラバス情報にある科目から選ぶ。
+おすすめは3つまで。
+理由は1文だけ。
+日本語で短く答える。
+URLはシラバス情報にあるものをそのまま使う。
 
-【シラバス情報】
+出力形式:
+1. 科目名：
+先生：
+評価：
+理由：
+URL：
+
+2. 科目名：
+先生：
+評価：
+理由：
+URL：
+
+3. 科目名：
+先生：
+評価：
+理由：
+URL：
+
+シラバス情報:
 ${syllabusText}
 
-【学生の希望】
+学生の希望:
 ${message}
 `;
+
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -196,12 +249,21 @@ ${message}
                 model: "openrouter/free",
                 messages: [
                     {
+                        role: "system",
+                        content:
+                            "日本語だけで最終回答のみを出してください。考えている過程、比較検討、英語の説明は絶対に出力しないでください。",
+                    },
+                    {
                         role: "user",
                         content: prompt,
                     },
                 ],
-                temperature: 0.3,
+                temperature: 0.2,
                 max_tokens: 400,
+                reasoning: {
+                    effort: "none",
+                    exclude: true,
+                },
             }),
         });
 
@@ -240,7 +302,7 @@ ${message}
             );
         }
 
-        const reply = data.choices?.[0]?.message?.content;
+        const reply = extractReply(data);
 
         if (!reply) {
             return new Response(
