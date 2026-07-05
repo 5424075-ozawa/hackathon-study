@@ -104,13 +104,24 @@ function App() {
 
     return (
         <div className="container">
-            <h1 className="title">
-                授業おすすめソン
-            </h1>
+            <h1 className="title">授業おすすめソン</h1>
 
-            <h2 className="subTitle">
-                評価基準の希望順位選択
-            </h2>
+            <div className="guideBox">
+                <h3>使い方</h3>
+
+                <ol>
+                    <li>第一希望と第二希望の評価基準を選択します。</li>
+                    <li>「決定」ボタンを押します。</li>
+                    <li>AIが条件に合った総合教育科目を3件おすすめします。</li>
+                    <li>おすすめ理由とシラバスURLも表示されます。</li>
+                </ol>
+
+                <p className="guideNote">
+                    ※ 第一希望のみ選択でも利用できます。
+                </p>
+            </div>
+
+            <h2 className="subTitle">評価基準の希望順位選択</h2>
 
             {ranks.map((rank) => (
                 <div className="rankRow" key={rank.id}>
@@ -118,7 +129,10 @@ function App() {
 
                     <div className="optionGroup">
                         {options.map((option) => (
-                            <label className="optionLabel" key={option.id}>
+                            <label
+                                className="optionLabel"
+                                key={option.id}
+                            >
                                 <input
                                     type="radio"
                                     name={rank.id}
