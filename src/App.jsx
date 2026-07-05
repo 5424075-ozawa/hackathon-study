@@ -3,12 +3,17 @@ import { useState } from "react";
 import { askAI } from "./api";
 
 function renderAnswer(text) {
+    const safeText =
+        typeof text === "string"
+            ? text
+            : JSON.stringify(text, null, 2);
+
     const urlRegex = /(https?:\/\/[^\s]+)/g;
 
-    return text.split("\n").map((line, i) => (
+    return safeText.split("\n").map((line, i) => (
         <div key={i}>
             {line.split(urlRegex).map((part, j) => {
-                if (urlRegex.test(part)) {
+                if (part.match(/^https?:\/\/[^\s]+$/)) {
                     return (
                         <a
                             key={j}
@@ -20,6 +25,7 @@ function renderAnswer(text) {
                         </a>
                     );
                 }
+
                 return part;
             })}
         </div>
@@ -47,10 +53,10 @@ function App() {
     const [loading, setLoading] = useState(false);
 
     const handleChange = (rankId, optionId) => {
-        setPreferences({
-            ...preferences,
+        setPreferences((prev) => ({
+            ...prev,
             [rankId]: optionId,
-        });
+        }));
     };
 
     const getOptionText = (optionId) => {
@@ -82,7 +88,12 @@ function App() {
             setAnswer("AIが考え中です...");
 
             const reply = await askAI(message);
-            setAnswer(reply);
+
+            if (typeof reply === "string") {
+                setAnswer(reply);
+            } else {
+                setAnswer(JSON.stringify(reply, null, 2));
+            }
         } catch (error) {
             console.error(error);
             setAnswer("AIの取得に失敗しました。");
@@ -93,26 +104,17 @@ function App() {
 
     return (
         <div className="container">
-            <h1 className="title">
-                授業おすすめソン
-            </h1>
+            <h1 className="title">授業おすすめソン</h1>
 
-            <h2 className="subTitle">
-                評価基準の希望順位選択
-            </h2>
+            <h2 className="subTitle">評価基準の希望順位選択</h2>
 
             {ranks.map((rank) => (
                 <div className="rankRow" key={rank.id}>
-                    <span className="rankLabel">
-                        {rank.label}:
-                    </span>
+                    <span className="rankLabel">{rank.label}:</span>
 
                     <div className="optionGroup">
                         {options.map((option) => (
-                            <label
-                                className="optionLabel"
-                                key={option.id}
-                            >
+                            <label className="optionLabel" key={option.id}>
                                 <input
                                     type="radio"
                                     name={rank.id}
@@ -139,11 +141,9 @@ function App() {
 
             {answer && (
                 <div className="answerBox">
-                    <h2 className="answerTitle">
-                        AIのおすすめ
-                    </h2>
+                    <h2 className="answerTitle">AIのおすすめ</h2>
 
-                    <div>
+                    <div className="answerText">
                         {renderAnswer(answer)}
                     </div>
                 </div>
