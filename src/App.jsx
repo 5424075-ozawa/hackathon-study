@@ -154,7 +154,7 @@ function App() {
                 onClick={handleSubmit}
                 disabled={loading}
             >
-                {loading ? "考え中..." : "決定"}
+                {loading ? "考え中..." : "おすすめの授業を検索する"}
             </button>
 
             {answer && (
