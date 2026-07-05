@@ -17,7 +17,7 @@ export async function askAI(message) {
             data = JSON.parse(text);
         } catch {
             console.error("JSONではないレスポンス:", text);
-            return "AIサーバー側でエラーが発生しました。Netlify Functionsのログを確認してください。";
+            return "AIサーバー側でエラーが発生しました。";
         }
 
         if (!response.ok) {
