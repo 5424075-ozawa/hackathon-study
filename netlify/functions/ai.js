@@ -53,12 +53,28 @@ ${row["URL"] || ""}
             }
         }
 
-        if (text.includes("レポート")) score += message.includes("レポート") ? 3 : 0;
-        if (text.includes("テスト")) score += message.includes("テスト") ? 3 : 0;
-        if (text.includes("試験")) score += message.includes("試験") ? 3 : 0;
-        if (text.includes("出席")) score += message.includes("出席") ? 2 : 0;
-        if (text.includes("オンデマンド")) score += message.includes("オンデマンド") ? 3 : 0;
-        if (text.includes("楽")) score += message.includes("楽") ? 2 : 0;
+        if (message.includes("レポート") && text.includes("レポート")) {
+            score += 5;
+        }
+
+        if (
+            (message.includes("テスト") || message.includes("試験")) &&
+            (text.includes("テスト") || text.includes("試験"))
+        ) {
+            score += 5;
+        }
+
+        if (message.includes("出席") && text.includes("出席")) {
+            score += 4;
+        }
+
+        if (message.includes("オンデマンド") && text.includes("オンデマンド")) {
+            score += 5;
+        }
+
+        if (message.includes("楽") && text.includes("楽")) {
+            score += 2;
+        }
 
         return {
             row,
@@ -72,10 +88,10 @@ ${row["URL"] || ""}
         .map((item) => item.row);
 
     if (matchedRows.length > 0) {
-        return matchedRows.slice(0, 40);
+        return matchedRows.slice(0, 20);
     }
 
-    return rows.slice(0, 40);
+    return rows.slice(0, 20);
 }
 
 function makeSyllabusText(rows) {
@@ -97,13 +113,17 @@ URL: ${row["URL"] || ""}
         .join("\n");
 }
 
-export default async (request) => {
+export default async function handler(request) {
     if (request.method !== "POST") {
         return new Response(
-            JSON.stringify({ error: "Method Not Allowed" }),
+            JSON.stringify({
+                error: "Method Not Allowed",
+            }),
             {
                 status: 405,
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
             }
         );
     }
@@ -113,20 +133,28 @@ export default async (request) => {
 
         if (!message) {
             return new Response(
-                JSON.stringify({ error: "message is required" }),
+                JSON.stringify({
+                    error: "message is required",
+                }),
                 {
                     status: 400,
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
             );
         }
 
         if (!process.env.OPENROUTER_API_KEY) {
             return new Response(
-                JSON.stringify({ error: "OPENROUTER_API_KEY is not set" }),
+                JSON.stringify({
+                    error: "OPENROUTER_API_KEY is not set",
+                }),
                 {
                     status: 500,
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
             );
         }
@@ -148,6 +176,7 @@ Markdownは絶対に使わない。
 1件あたり4行以内。
 理由は1文だけ。
 日本語で短く答える。
+URLはシラバス情報にあるものをそのまま使う。
 
 出力形式:
 1. 科目名：
@@ -184,7 +213,7 @@ ${message}
                 "X-Title": "hackathon-study",
             },
             body: JSON.stringify({
-                model: "deepseek/deepseek-chat-v3-0324:free",
+                model: "openrouter/free",
                 messages: [
                     {
                         role: "user",
@@ -209,7 +238,9 @@ ${message}
                 }),
                 {
                     status: 500,
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
             );
         }
@@ -217,7 +248,9 @@ ${message}
         if (!response.ok) {
             return new Response(JSON.stringify(data), {
                 status: response.status,
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
         }
 
@@ -229,7 +262,9 @@ ${message}
             }),
             {
                 status: 200,
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
             }
         );
     } catch (error) {
@@ -240,8 +275,10 @@ ${message}
             }),
             {
                 status: 500,
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
             }
         );
     }
-};
+}
