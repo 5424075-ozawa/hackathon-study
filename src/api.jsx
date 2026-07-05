@@ -1,8 +1,6 @@
-const API_BASE_URL = "http://localhost:3001";
-
 export async function askAI(message) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/ai`, {
+        const response = await fetch("/.netlify/functions/ai", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
