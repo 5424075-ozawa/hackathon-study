@@ -23,3 +23,4 @@ export async function askAI(message) {
         return "サーバーとの通信に失敗しました。";
     }
 }
+export default App;
